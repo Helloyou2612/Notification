@@ -6,3 +6,7 @@
 /Noti.Api/Noti.Api/obj
 /Noti.Api/Noti.Api/bin/Debug/net6.0
 /Noti.Api/.vs/Noti.Api/DesignTimeBuild
+/Clients/node_modules
+/Clients/.vscode
+/.vscode
+/Noti.Api/.vs/Noti.Api/config

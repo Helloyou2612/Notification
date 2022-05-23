@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@microsoft/signalr": "^6.0.5",
+    "antd": "^4.20.6"
+  }
+}
