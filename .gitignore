@@ -1,0 +1,8 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/Noti.Api/.vs/Noti.Api/v17
+/Noti.Api/Noti.Api/obj
+/Noti.Api/Noti.Api/bin/Debug/net6.0
+/Noti.Api/.vs/Noti.Api/DesignTimeBuild
