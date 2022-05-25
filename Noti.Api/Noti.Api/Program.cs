@@ -21,9 +21,15 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseCors(x => x
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .SetIsOriginAllowed(origin => true)
+    .AllowCredentials());
+
 app.UseAuthorization();
 
 app.MapControllers();
-app.MapHub<NotiHub>("hubs/notification");
+app.MapHub<NotificationHub>("hubs/notifications");
 
 app.Run();
