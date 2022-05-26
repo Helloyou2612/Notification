@@ -1,9 +1,10 @@
-import React, { useEffect, useState }  from 'react';
-import * as signalR from "@microsoft/signalr";
 import './App.css';
+import React, { useEffect, useState }  from 'react';
+import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
+import url from './config/config';
+
 const App: React.FC = () => {
-  const url = "https://localhost:7238";
-  const hubConnection = new signalR.HubConnectionBuilder()
+  const hubConnection = new HubConnectionBuilder()
   .withUrl(`${url}/hubs/notifications`)
   .build();
   
@@ -12,24 +13,30 @@ const App: React.FC = () => {
   var list: string[] = [];
 
   interface MessageProps {
-    HubConnection: signalR.HubConnection
+    HubConnection: HubConnection
   }
 
-  const Messages: React.FC<MessageProps> = (messageProps) => {
+  function Messages(messageProps: MessageProps): JSX.Element {
 
     const [date, setDate] = useState<Date>();
 
     useEffect(() => {
       messageProps.HubConnection.on("sendToClient", message => {
-        list.push(message);
+        list.push(`${date}: ${message}`);
         setDate(new Date());
-      })
+      });
     }, []);
 
-    return <>{list.map((message, index) => <p key={`message${index}`}>{message}</p>)}</>
+    return <>
+      {
+        list.map((message, index) => {
+          return <p key={`message${index}`}>{message}</p>;
+        })
+      }
+    </>;
   }
 
-  const SendMessage: React.FC = () => {
+  function SendMessage(): JSX.Element {
 
     const [message, setMessage] = useState("");
 
@@ -37,7 +44,7 @@ const App: React.FC = () => {
       if (event && event.target) {
         setMessage(event.target.value);
       }
-    }
+    };
 
     const messageSubmit = (event: React.MouseEvent) => {
       if (event) {
@@ -54,13 +61,19 @@ const App: React.FC = () => {
 
         setMessage("");
       }
-    }
+    };
 
-    return <><label>Enter your Message</label><input type="text" onChange={messageChange} value={message} /><button onClick={messageSubmit}>Add Message</button></>;
- 
+    return <>
+      <label>Enter your Message</label>
+      <input type="text" onChange={messageChange} value={message} />
+      <button onClick={messageSubmit}>Add Message</button>
+    </>;
   }
 
 
-  return <><SendMessage /><Messages HubConnection={hubConnection}></Messages></>
+  return <>
+    <SendMessage />
+    <Messages HubConnection={hubConnection}></Messages>
+  </>
 }
 export default App;
