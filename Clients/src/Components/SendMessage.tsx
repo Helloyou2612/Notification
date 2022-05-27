@@ -1,7 +1,7 @@
 import { useState } from "react";
-import url from "../config/config";
+import config from "../config/config";
 
-function SendMessage() {
+const SendMessage = () => {
 
     const [message, setMessage] = useState("");
 
@@ -13,10 +13,10 @@ function SendMessage() {
 
     const messageSubmit = (event: React.MouseEvent) => {
         if (event) {
-            fetch(`${url}/api/Notification`, {
+            fetch(`${config.notiApiUrl}`, {
                 "method": "POST",
                 "headers": {
-                    Accept: "application/json",
+                    "Accept": "application/json",
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
@@ -28,12 +28,10 @@ function SendMessage() {
         }
     };
 
-    return <>
+    return (<>
         <label>Enter your Message</label>
         <input type="text" onChange={messageChange} value={message} />
         <button onClick={messageSubmit}>Add Message</button>
-    </>;
-
+    </>);
 }
-
-  export default  SendMessage
+export default  SendMessage
