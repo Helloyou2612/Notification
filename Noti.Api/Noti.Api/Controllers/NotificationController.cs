@@ -17,9 +17,24 @@ public class NotificationController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Post(NotifyMessage message)
+    public async Task<IActionResult> Post(NotifyMessage model)
     {
-        await _notificationContext.Clients.All.SendAsync("sendToClient", message.Message);
+        if (!string.IsNullOrEmpty(model.GroupName))
+        {
+            await _notificationContext.Clients.Groups(model.GroupName).SendAsync("sendToClient", model.Message);
+        }
+        else if (!string.IsNullOrEmpty(model.UserId))
+        {
+            await _notificationContext.Clients.Client(model.UserId).SendAsync("sendToClient", model.Message);
+        }
+        else if (!string.IsNullOrEmpty(model.ConnectionId))
+        {
+            await _notificationContext.Clients.Client(model.ConnectionId).SendAsync("sendToClient", model.Message);
+        }
+        else if(model.All == "ALL")
+        {
+            await _notificationContext.Clients.All.SendAsync("sendToClient", model.Message);
+        }
 
         return Ok();
     }
